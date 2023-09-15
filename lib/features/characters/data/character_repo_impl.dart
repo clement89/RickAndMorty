@@ -15,10 +15,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
         header: {},
       );
       if (res.isError) {
-        return Future.value(
-            Left(AppError(message: 'Failed to get characters from server')));
+        return Future.value(const Left(
+            AppError(message: 'Failed to get characters from server')));
       } else {
-        List<dynamic> characterData = res.data['feeds'];
+        List<dynamic> characterData = res.data['results'];
         List<Character> characters = [];
         for (Map<String, dynamic>? characterItem in characterData) {
           if (characterItem != null) {
@@ -31,8 +31,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
         return Future.value(Right(characters));
       }
     } catch (e) {
-      return Future.value(
-          Left(AppError(message: 'Failed to get characters from server')));
+      return Future.value(const Left(
+          AppError(message: 'Failed to get characters from server')));
     }
   }
 }

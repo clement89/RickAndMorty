@@ -38,7 +38,7 @@ class RestService {
 
       logService.logInfo('statue code --- ${response.statusCode}');
 
-      logService.logInfo('data --- ${response.body}');
+      // logService.logInfo('data --- ${response.body}');
 
       if (response.statusCode == 200) {
         // var data = json.decode(response.body.toString()) as dynamic;

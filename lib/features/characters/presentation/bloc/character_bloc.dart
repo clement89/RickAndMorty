@@ -20,6 +20,9 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
     Emitter<CharacterState> emit,
   ) async {
     try {
+      emit(state.copyWith(
+        status: Status.loading,
+      ));
       final res = await characterRepository.getAllCharacters();
       res.fold(
         (l) => emit(state.copyWith(status: Status.error, error: l)),
