@@ -7,8 +7,7 @@ import 'package:rick_morty/di/injection_container.dart';
 
 class RestService {
   final int timeOut = 20;
-  final String _baseUrl =
-      'https://us-central1-kurerodev-77485.cloudfunctions.net/api/v1/';
+  final String _baseUrl = 'https://rickandmortyapi.com/api/';
 
   Future<Map<String, String>> _getAuthHeader() async {
     return {

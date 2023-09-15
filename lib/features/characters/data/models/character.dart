@@ -1,4 +1,6 @@
-class Character {
+import 'package:equatable/equatable.dart';
+
+class Character extends Equatable {
   final int id;
   final String name;
   final String status;
@@ -28,21 +30,56 @@ class Character {
   });
 
   factory Character.fromJson(Map<String, dynamic> json) {
+    try {
+      return Character(
+        id: json['id'],
+        name: json['name'],
+        status: json['status'],
+        species: json['species'],
+        type: json['type'],
+        gender: json['gender'],
+        origin: CharacterOrigin.fromJson(json['origin']),
+        location: CharacterLocation.fromJson(json['location']),
+        image: json['image'],
+        episode: List<String>.from(json['episode']),
+        url: json['url'],
+        created: json['created'],
+      );
+    } catch (e) {
+      // Handle parsing error by returning an empty character
+      return Character.empty();
+    }
+  }
+
+  factory Character.empty() {
     return Character(
-      id: json['id'],
-      name: json['name'],
-      status: json['status'],
-      species: json['species'],
-      type: json['type'],
-      gender: json['gender'],
-      origin: CharacterOrigin.fromJson(json['origin']),
-      location: CharacterLocation.fromJson(json['location']),
-      image: json['image'],
-      episode: List<String>.from(json['episode']),
-      url: json['url'],
-      created: json['created'],
+      id: 0,
+      name: '',
+      status: '',
+      species: '',
+      type: '',
+      gender: '',
+      origin: CharacterOrigin(name: '', url: ''),
+      location: CharacterLocation(name: '', url: ''),
+      image: '',
+      episode: [],
+      url: '',
+      created: '',
     );
   }
+
+  @override
+  List<Object?> get props => [
+        name,
+        status,
+        species,
+        type,
+        gender,
+        origin,
+        location,
+        image,
+        episode,
+      ];
 }
 
 class CharacterOrigin {
