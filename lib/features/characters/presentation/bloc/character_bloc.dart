@@ -11,9 +11,31 @@ part 'character_state.dart';
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   CharacterBloc({required this.characterRepository})
       : super(CharacterState.initial()) {
-    on<CharacterEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<LoadCharacters>(_fetchPosts);
   }
   final CharacterRepository characterRepository;
+
+  Future<void> _fetchPosts(
+    LoadCharacters event,
+    Emitter<CharacterState> emit,
+  ) async {
+    try {
+      final res = await characterRepository.getAllCharacters();
+      res.fold(
+        (l) => emit(state.copyWith(status: Status.error, error: l)),
+        (r) => emit(
+          state.copyWith(
+            characterList: r,
+            status: Status.loaded,
+            error: AppError.empty(),
+          ),
+        ),
+      );
+    } catch (error) {
+      emit(state.copyWith(
+        status: Status.error,
+        error: const AppError(message: 'Unable to load characters'),
+      ));
+    }
+  }
 }
