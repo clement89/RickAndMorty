@@ -29,17 +29,22 @@ class StorageService {
     await _characterBox!.addAll(hiveCharacters);
   }
 
-  List<Character> getCharacters() {
-    // Ensure the character box is open
-    if (_characterBox == null) {
-      throw Exception('Character box is not open.');
-    }
+  List<Character>? getCharacters() {
+    try {
+      // Ensure the character box is open
+      if (_characterBox == null) {
+        throw Exception('Character box is not open.');
+      }
 
-    // Retrieve all characters from the box
-    List<CharacterHive> list = _characterBox!.values.toList();
-    return list
-        .map((hiveModel) => StorageHelpers.convertToCharacter(hiveModel))
-        .toList();
+      // Retrieve all characters from the box
+      List<CharacterHive> list = _characterBox!.values.toList();
+      List<Character>? chatList = list
+          .map((hiveModel) => StorageHelpers.convertToCharacter(hiveModel))
+          .toList();
+      return chatList ?? [];
+    } catch (e) {
+      return [];
+    }
   }
 
   void clearCharacters() {

@@ -35,8 +35,8 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           // emit(state.copyWith(status: Status.error, error: l));
           emit(
             state.copyWith(
-              characterList: storageService.getCharacters(),
-              filteredList: storageService.getCharacters(),
+              characterList: storageService.getCharacters() ?? [],
+              filteredList: storageService.getCharacters() ?? [],
               status: Status.loaded,
               error: AppError.empty(),
             ),
@@ -56,8 +56,8 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           } else {
             emit(
               state.copyWith(
-                characterList: storageService.getCharacters(),
-                filteredList: storageService.getCharacters(),
+                characterList: storageService.getCharacters() ?? [],
+                filteredList: storageService.getCharacters() ?? [],
                 status: Status.loaded,
                 error: AppError.empty(),
               ),
