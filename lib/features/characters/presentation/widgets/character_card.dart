@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rick_morty/features/characters/data/models/character.dart';
 import 'package:rick_morty/utils/formatter.dart';
+import 'package:rick_morty/widgets/custom_image.dart';
 
 class CharacterCard extends StatelessWidget {
   final Character character;
@@ -25,21 +25,8 @@ class CharacterCard extends StatelessWidget {
                   width: 0.35.sw,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.sp),
-                    child: CachedNetworkImage(
+                    child: CustomImage(
                       imageUrl: character.image,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) {
-                        return Center(
-                          child: SizedBox(
-                            width: 20,
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                          ),
-                        );
-                      },
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
                     ),
                   ),
                 ),

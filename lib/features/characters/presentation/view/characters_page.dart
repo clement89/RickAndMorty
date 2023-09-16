@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/bloc/character_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/widgets/character_card.dart';
 import 'package:rick_morty/features/characters/presentation/widgets/filter_bottom_sheet.dart';
+import 'package:rick_morty/widgets/custom_loader.dart';
 
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
@@ -50,7 +51,7 @@ class _CharactersPageState extends State<CharactersPage> {
           builder: (context, state) {
             if (state.status == Status.loading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CustomLoader(),
               );
             } else if (state.status == Status.error) {
               return Center(
