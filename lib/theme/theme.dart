@@ -19,6 +19,18 @@ class AppTheme {
         color: AppColors.dark,
         fontSize: FontSize.large.sp,
       ),
+      bodyLarge: TextStyle(
+        color: AppColors.dark,
+        fontSize: FontSize.heading.sp,
+      ),
+      bodyMedium: TextStyle(
+        color: AppColors.dark,
+        fontSize: FontSize.normal.sp,
+      ),
+      bodySmall: TextStyle(
+        color: AppColors.dark,
+        fontSize: FontSize.small.sp,
+      ),
     ),
   );
 
@@ -33,6 +45,18 @@ class AppTheme {
       titleMedium: TextStyle(
         color: AppColors.light,
         fontSize: FontSize.large.sp,
+      ),
+      bodyLarge: TextStyle(
+        color: AppColors.light,
+        fontSize: FontSize.heading.sp,
+      ),
+      bodyMedium: TextStyle(
+        color: AppColors.light,
+        fontSize: FontSize.normal.sp,
+      ),
+      bodySmall: TextStyle(
+        color: AppColors.light,
+        fontSize: FontSize.small.sp,
       ),
     ),
   );

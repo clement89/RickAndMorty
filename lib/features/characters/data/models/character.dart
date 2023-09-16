@@ -14,7 +14,7 @@ class Character extends Equatable {
   final String url;
   final String created;
 
-  Character({
+  const Character({
     required this.id,
     required this.name,
     required this.status,
