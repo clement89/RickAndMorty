@@ -6,25 +6,25 @@ part of 'character.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CharacterAdapter extends TypeAdapter<Character> {
+class CharacterHiveAdapter extends TypeAdapter<CharacterHive> {
   @override
   final int typeId = 0;
 
   @override
-  Character read(BinaryReader reader) {
+  CharacterHive read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Character(
+    return CharacterHive(
       id: fields[0] as int,
       name: fields[1] as String,
       status: fields[2] as String,
       species: fields[3] as String,
       type: fields[4] as String,
       gender: fields[5] as String,
-      origin: fields[6] as CharacterOrigin,
-      location: fields[7] as CharacterLocation,
+      origin: fields[6] as CharacterOriginHive,
+      location: fields[7] as CharacterLocationHive,
       image: fields[8] as String,
       episode: (fields[9] as List).cast<String>(),
       url: fields[10] as String,
@@ -33,7 +33,7 @@ class CharacterAdapter extends TypeAdapter<Character> {
   }
 
   @override
-  void write(BinaryWriter writer, Character obj) {
+  void write(BinaryWriter writer, CharacterHive obj) {
     writer
       ..writeByte(12)
       ..writeByte(0)
@@ -68,7 +68,7 @@ class CharacterAdapter extends TypeAdapter<Character> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CharacterAdapter &&
+      other is CharacterHiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

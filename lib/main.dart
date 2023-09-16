@@ -18,9 +18,10 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await ScreenUtil.ensureScreenSize();
     await Hive.initFlutter();
-    Hive.registerAdapter(CharacterAdapter());
-    Hive.registerAdapter(CharacterOriginAdapter());
-    Hive.registerAdapter(CharacterLocationAdapter());
+    Hive.registerAdapter(CharacterHiveAdapter());
+    Hive.registerAdapter(CharacterOriginHiveAdapter());
+    Hive.registerAdapter(CharacterLocationHiveAdapter());
+    // final storageService = serviceLocator<LogService>();
 
     runApp(MyApp());
   }, (error, stackTrace) {

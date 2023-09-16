@@ -5,7 +5,7 @@ import 'package:rick_morty/core/storage/models/character_origin.dart';
 part 'character.g.dart';
 
 @HiveType(typeId: 0)
-class Character extends HiveObject {
+class CharacterHive extends HiveObject {
   @HiveField(0)
   final int id;
 
@@ -25,10 +25,10 @@ class Character extends HiveObject {
   final String gender;
 
   @HiveField(6)
-  final CharacterOrigin origin;
+  final CharacterOriginHive origin;
 
   @HiveField(7)
-  final CharacterLocation location;
+  final CharacterLocationHive location;
 
   @HiveField(8)
   final String image;
@@ -42,7 +42,7 @@ class Character extends HiveObject {
   @HiveField(11)
   final String created;
 
-  Character({
+  CharacterHive({
     required this.id,
     required this.name,
     required this.status,
