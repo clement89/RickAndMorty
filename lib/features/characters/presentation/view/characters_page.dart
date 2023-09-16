@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/bloc/character_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/widgets/character_card.dart';
+import 'package:rick_morty/features/characters/presentation/widgets/filter_bottom_sheet.dart';
 
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
@@ -26,7 +27,15 @@ class _CharactersPageState extends State<CharactersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Character List'),
+        title: const Text('Rick & Morty'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () {
+              showFilterBottomSheet(context);
+            },
+          ),
+        ],
       ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -49,9 +58,9 @@ class _CharactersPageState extends State<CharactersPage> {
               );
             } else if (state.status == Status.loaded) {
               return ListView.builder(
-                itemCount: state.characterList.length,
+                itemCount: state.filteredList.length,
                 itemBuilder: (context, index) {
-                  final character = state.characterList[index];
+                  final character = state.filteredList[index];
                   return CharacterCard(
                     character: character,
                     key: Key(

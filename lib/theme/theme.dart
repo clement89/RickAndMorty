@@ -9,6 +9,14 @@ class AppTheme {
 
   static final light = ThemeData.light().copyWith(
     scaffoldBackgroundColor: AppColors.light,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.appBarLight,
+      titleTextStyle: TextStyle(
+        color: AppColors.dark,
+        fontSize: FontSize.heading.sp,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
     textTheme: TextTheme(
       titleLarge: TextStyle(
         color: AppColors.dark,
@@ -36,6 +44,14 @@ class AppTheme {
 
   static final dark = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppColors.dark,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.appBarDark,
+      titleTextStyle: TextStyle(
+        color: AppColors.light,
+        fontSize: FontSize.heading.sp,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
     textTheme: TextTheme(
       titleLarge: TextStyle(
         color: AppColors.light,

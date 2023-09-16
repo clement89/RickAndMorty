@@ -11,11 +11,13 @@ part 'character_state.dart';
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   CharacterBloc({required this.characterRepository})
       : super(CharacterState.initial()) {
-    on<LoadCharacters>(_fetchPosts);
+    on<LoadCharacters>(_fetchCharacters);
+    on<UpdateFilter>(_updateFilter);
+    on<ApplyFilter>(_applyFilter);
   }
   final CharacterRepository characterRepository;
 
-  Future<void> _fetchPosts(
+  Future<void> _fetchCharacters(
     LoadCharacters event,
     Emitter<CharacterState> emit,
   ) async {
@@ -29,11 +31,84 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
         (r) => emit(
           state.copyWith(
             characterList: r,
+            filteredList: r,
             status: Status.loaded,
             error: AppError.empty(),
           ),
         ),
       );
+    } catch (error) {
+      emit(state.copyWith(
+        status: Status.error,
+        error: const AppError(message: 'Unable to load characters'),
+      ));
+    }
+  }
+
+  Future<void> _updateFilter(
+    UpdateFilter event,
+    Emitter<CharacterState> emit,
+  ) async {
+    try {
+      if (event.filter == Filter.name) {
+        emit(state.copyWith(
+          selectedFilter: Filter.name,
+          filterValues: state.characterList
+              .map((character) => character.name)
+              .toSet()
+              .toList(),
+        ));
+      } else if (event.filter == Filter.status) {
+        emit(state.copyWith(
+          selectedFilter: Filter.status,
+          filterValues: state.characterList
+              .map((character) => character.status)
+              .toSet()
+              .toList(),
+        ));
+      } else if (event.filter == Filter.species) {
+        emit(state.copyWith(
+          selectedFilter: Filter.species,
+          filterValues: state.characterList
+              .map((character) => character.species)
+              .toSet()
+              .toList(),
+        ));
+      } else {
+        emit(state.copyWith(selectedFilter: Filter.none, filterValues: []));
+      }
+    } catch (error) {
+      emit(state.copyWith(
+        status: Status.error,
+        error: const AppError(message: 'Unable to load characters'),
+      ));
+    }
+  }
+
+  Future<void> _applyFilter(
+    ApplyFilter event,
+    Emitter<CharacterState> emit,
+  ) async {
+    try {
+      List<Character> list = [];
+
+      if (event.filter == Filter.name) {
+        list = state.characterList
+            .where((character) => character.name.contains(event.value))
+            .toList();
+      } else if (event.filter == Filter.status) {
+        list = state.characterList
+            .where((character) => character.status.contains(event.value))
+            .toList();
+      } else {
+        list = state.characterList
+            .where((character) => character.species.contains(event.value))
+            .toList();
+      }
+
+      emit(state.copyWith(
+        filteredList: list,
+      ));
     } catch (error) {
       emit(state.copyWith(
         status: Status.error,
