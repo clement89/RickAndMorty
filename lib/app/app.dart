@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<CharacterBloc>(
           create: (BuildContext context) => CharacterBloc(
             characterRepository: serviceLocator(),
+            storageService: serviceLocator(),
           ),
         ),
       ],

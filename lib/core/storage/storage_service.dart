@@ -21,6 +21,7 @@ class StorageService {
     if (_characterBox == null) {
       throw Exception('Character box is not open.');
     }
+    clearCharacters();
     // Convert and save each Character object to Hive
     List<CharacterHive> hiveCharacters = characters
         .map((character) => StorageHelpers.convertToHiveModel(character))

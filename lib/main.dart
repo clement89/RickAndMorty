@@ -8,6 +8,7 @@ import 'package:rick_morty/core/logs/log_service.dart';
 import 'package:rick_morty/core/storage/models/character.dart';
 import 'package:rick_morty/core/storage/models/character_location.dart';
 import 'package:rick_morty/core/storage/models/character_origin.dart';
+import 'package:rick_morty/core/storage/storage_service.dart';
 import 'package:rick_morty/di/injection_container.dart';
 
 void main() async {
@@ -21,7 +22,8 @@ void main() async {
     Hive.registerAdapter(CharacterHiveAdapter());
     Hive.registerAdapter(CharacterOriginHiveAdapter());
     Hive.registerAdapter(CharacterLocationHiveAdapter());
-    // final storageService = serviceLocator<LogService>();
+    final storageService = serviceLocator<StorageService>();
+    storageService.openHiveBoxes();
 
     runApp(MyApp());
   }, (error, stackTrace) {

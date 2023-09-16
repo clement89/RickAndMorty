@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty/core/models/app_error.dart';
+import 'package:rick_morty/core/storage/storage_service.dart';
 import 'package:rick_morty/features/characters/data/models/character.dart';
 import 'package:rick_morty/features/characters/domain/character_repo.dart';
 
@@ -9,13 +10,16 @@ part 'character_event.dart';
 part 'character_state.dart';
 
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
-  CharacterBloc({required this.characterRepository})
-      : super(CharacterState.initial()) {
+  CharacterBloc({
+    required this.characterRepository,
+    required this.storageService,
+  }) : super(CharacterState.initial()) {
     on<LoadCharacters>(_fetchCharacters);
     on<UpdateFilter>(_updateFilter);
     on<ApplyFilter>(_applyFilter);
   }
   final CharacterRepository characterRepository;
+  final StorageService storageService;
 
   Future<void> _fetchCharacters(
     LoadCharacters event,
@@ -27,15 +31,39 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       ));
       final res = await characterRepository.getAllCharacters();
       res.fold(
-        (l) => emit(state.copyWith(status: Status.error, error: l)),
-        (r) => emit(
-          state.copyWith(
-            characterList: r,
-            filteredList: r,
-            status: Status.loaded,
-            error: AppError.empty(),
-          ),
-        ),
+        (l) {
+          // emit(state.copyWith(status: Status.error, error: l));
+          emit(
+            state.copyWith(
+              characterList: storageService.getCharacters(),
+              filteredList: storageService.getCharacters(),
+              status: Status.loaded,
+              error: AppError.empty(),
+            ),
+          );
+        },
+        (r) {
+          if (r.isNotEmpty) {
+            storageService.saveCharacters(r);
+            emit(
+              state.copyWith(
+                characterList: r,
+                filteredList: r,
+                status: Status.loaded,
+                error: AppError.empty(),
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                characterList: storageService.getCharacters(),
+                filteredList: storageService.getCharacters(),
+                status: Status.loaded,
+                error: AppError.empty(),
+              ),
+            );
+          }
+        },
       );
     } catch (error) {
       emit(state.copyWith(
