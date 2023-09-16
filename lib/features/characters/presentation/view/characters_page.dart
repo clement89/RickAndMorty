@@ -1,10 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/bloc/character_bloc.dart';
 import 'package:rick_morty/features/characters/presentation/widgets/character_card.dart';
 import 'package:rick_morty/features/characters/presentation/widgets/filter_bottom_sheet.dart';
+import 'package:rick_morty/router/app_router.gr.dart';
 import 'package:rick_morty/widgets/custom_loader.dart';
 
+@RoutePage()
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
 
@@ -62,10 +65,16 @@ class _CharactersPageState extends State<CharactersPage> {
                 itemCount: state.filteredList.length,
                 itemBuilder: (context, index) {
                   final character = state.filteredList[index];
-                  return CharacterCard(
-                    character: character,
-                    key: Key(
-                      character.id.toString(),
+                  return GestureDetector(
+                    onTap: () {
+                      final router = AutoRouter.of(context);
+                      router.push(CharacterDetailsRoute(character: character));
+                    },
+                    child: CharacterCard(
+                      character: character,
+                      key: Key(
+                        character.id.toString(),
+                      ),
                     ),
                   );
                 },
