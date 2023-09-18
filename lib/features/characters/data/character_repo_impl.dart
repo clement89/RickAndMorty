@@ -28,7 +28,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
             }
           }
         }
-        return Future.value(Right(characters));
+        return Right(characters);
       }
     } catch (e) {
       return Future.value(const Left(
