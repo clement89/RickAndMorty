@@ -48,5 +48,36 @@ void main() {
         ),
       ],
     );
+
+    blocTest<CharacterBloc, CharacterState>(
+      'emits [MyState] '
+      'when [UpdateFilter] is added.',
+      setUp: () {},
+      build: () => CharacterBloc(
+        characterRepository: repo,
+        storageService: storage,
+      ),
+      act: (bloc) => bloc.add(const UpdateFilter(filter: Filter.name)),
+      verify: (bloc) {},
+      expect: () => <CharacterState>[
+        CharacterState.initial().copyWith(selectedFilter: Filter.name),
+      ],
+    );
   });
+
+  blocTest<CharacterBloc, CharacterState>(
+    'emits [MyState] '
+    'when [ApplyFilter] is added.',
+    setUp: () {},
+    build: () => CharacterBloc(
+      characterRepository: repo,
+      storageService: storage,
+    ),
+    act: (bloc) =>
+        bloc.add(const ApplyFilter(filter: Filter.name, value: 'Rick')),
+    verify: (bloc) {},
+    expect: () => <CharacterState>[
+      CharacterState.initial().copyWith(selectedFilter: Filter.name),
+    ],
+  );
 }

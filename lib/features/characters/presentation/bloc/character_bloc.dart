@@ -135,6 +135,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       }
 
       emit(state.copyWith(
+        selectedFilter: event.filter,
         filteredList: list,
       ));
     } catch (error) {

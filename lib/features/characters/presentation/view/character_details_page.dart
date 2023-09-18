@@ -15,8 +15,7 @@ class CharacterDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(character.name), // Display the character's name as the title
+        title: Text(character.name),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

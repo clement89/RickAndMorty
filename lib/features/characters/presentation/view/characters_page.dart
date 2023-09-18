@@ -80,7 +80,7 @@ class _CharactersPageState extends State<CharactersPage> {
                 },
               );
             }
-            return Container(); // Return an empty container by default
+            return const Text('No data found');
           },
         ),
       ),
