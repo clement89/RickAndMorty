@@ -15,12 +15,14 @@ class CharacterRepositoryImpl implements CharacterRepository {
         header: {},
       );
       if (res.isError) {
-        return Future.value(const Left(
-            AppError(message: 'Failed to get characters from server')));
+        return const Left(
+            AppError(message: 'Failed to get characters from server'));
       } else {
         List<dynamic> characterData = res.data['results'];
         List<Character> characters = [];
-        for (Map<String, dynamic>? characterItem in characterData) {
+
+        for (int i = 0; i < characterData.length; i++) {
+          Map<String, dynamic>? characterItem = characterData[i];
           if (characterItem != null) {
             Character character = Character.fromJson(characterItem);
             if (character != Character.empty()) {
@@ -28,11 +30,11 @@ class CharacterRepositoryImpl implements CharacterRepository {
             }
           }
         }
-        return Right(characters);
+        return Future.value(Right(characters));
       }
     } catch (e) {
-      return Future.value(const Left(
-          AppError(message: 'Failed to get characters from server')));
+      return const Left(
+          AppError(message: 'Failed to get characters from server'));
     }
   }
 }

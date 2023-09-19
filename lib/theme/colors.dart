@@ -5,4 +5,5 @@ class AppColors {
   static const Color light = Colors.white;
   static const Color appBarLight = Color(0XFFF39F5A);
   static const Color appBarDark = Color(0XFF451952);
+  static const Color filterColor = Color(0XFFEDB7ED);
 }

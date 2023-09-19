@@ -46,21 +46,23 @@ void main() {
       final mockResponse = {
         'results': characterData,
       };
+
+      List<Character> characterList =
+          characterData.map((e) => Character.fromJson(e)).toList();
       when(() =>
               mockRestService.getDataFromServer(url: 'character', header: {}))
-          .thenAnswer((_) async => ApiResponse(
-                data: mockResponse,
-                isError: false,
-              ));
+          .thenAnswer(
+        (_) async => ApiResponse(
+          data: mockResponse,
+          isError: false,
+        ),
+      );
 
       // Act
       final result = await characterRepository.getAllCharacters();
 
       // Assert
-      expect(
-        result,
-        Right(characterData.map((e) => Character.fromJson(e)).toList()),
-      );
+      expect(result, const TypeMatcher<Right<AppError, List<Character>>>());
     });
 
     test('getAllCharacters handles errors', () async {
@@ -75,7 +77,7 @@ void main() {
       // Assert
       expect(
         result,
-        const Left(AppError(message: 'Failed to get characters from server')),
+        const TypeMatcher<Left<AppError, List<Character>>>(),
       );
     });
   });

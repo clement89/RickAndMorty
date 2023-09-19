@@ -8,6 +8,7 @@ class AppTheme {
   AppTheme._();
 
   static final light = ThemeData.light().copyWith(
+    hintColor: AppColors.filterColor,
     scaffoldBackgroundColor: AppColors.light,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.appBarLight,
@@ -43,6 +44,7 @@ class AppTheme {
   );
 
   static final dark = ThemeData.dark().copyWith(
+    hintColor: AppColors.filterColor,
     scaffoldBackgroundColor: AppColors.dark,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.appBarDark,

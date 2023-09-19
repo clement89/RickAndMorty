@@ -11,7 +11,7 @@ Future<void> showFilterBottomSheet(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return SizedBox(
-        height: 0.40.sh,
+        height: 0.42.sh,
         child: Container(
           padding: EdgeInsets.all(15.sp),
           child: Column(
@@ -20,7 +20,7 @@ Future<void> showFilterBottomSheet(BuildContext context) async {
                 'Apply Filter',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(height: 10.sp),
+              SizedBox(height: 20.sp),
               SizedBox(
                 height: 0.30.sh,
                 child: Row(
@@ -36,21 +36,25 @@ Future<void> showFilterBottomSheet(BuildContext context) async {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 0.45.sw,
+                    Expanded(
                       child: BlocBuilder<CharacterBloc, CharacterState>(
                         builder: (context, state) {
-                          return ListView.builder(
-                            itemCount: state.filterValues.length,
-                            itemBuilder: (context, index) {
-                              return FilterValueItem(
-                                filter: state.selectedFilter,
-                                title: state.filterValues[index],
-                                dismissCallback: () {
-                                  Navigator.pop(context);
-                                },
-                              );
-                            },
+                          return Container(
+                            color: state.selectedFilter == Filter.none
+                                ? Theme.of(context).scaffoldBackgroundColor
+                                : Theme.of(context).hintColor,
+                            child: ListView.builder(
+                              itemCount: state.filterValues.length,
+                              itemBuilder: (context, index) {
+                                return FilterValueItem(
+                                  filter: state.selectedFilter,
+                                  title: state.filterValues[index],
+                                  dismissCallback: () {
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
