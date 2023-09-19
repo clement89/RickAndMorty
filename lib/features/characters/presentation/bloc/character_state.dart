@@ -7,6 +7,8 @@ class CharacterState extends Equatable {
   final List<Character> filteredList;
   final Filter selectedFilter;
   final List<String> filterValues;
+  final String selectedFilterValue;
+  final int page;
   final AppError error;
 
   const CharacterState({
@@ -15,7 +17,9 @@ class CharacterState extends Equatable {
     required this.filteredList,
     required this.selectedFilter,
     required this.filterValues,
+    required this.selectedFilterValue,
     required this.error,
+    required this.page,
   });
 
   factory CharacterState.initial() {
@@ -25,7 +29,9 @@ class CharacterState extends Equatable {
       filteredList: const [],
       selectedFilter: Filter.none,
       filterValues: const [],
+      selectedFilterValue: '',
       error: AppError.empty(),
+      page: 1,
     );
   }
 
@@ -35,7 +41,9 @@ class CharacterState extends Equatable {
     AppError? error,
     Status? status,
     Filter? selectedFilter,
+    String? selectedFilterValue,
     List<String>? filterValues,
+    int? page,
   }) {
     return CharacterState(
       characterList: characterList ?? this.characterList,
@@ -43,7 +51,9 @@ class CharacterState extends Equatable {
       error: error ?? this.error,
       status: status ?? this.status,
       selectedFilter: selectedFilter ?? this.selectedFilter,
+      selectedFilterValue: selectedFilterValue ?? this.selectedFilterValue,
       filterValues: filterValues ?? this.filterValues,
+      page: page ?? this.page,
     );
   }
 
@@ -55,6 +65,8 @@ class CharacterState extends Equatable {
         error,
         selectedFilter,
         filterValues,
+        selectedFilterValue,
+        page,
       ];
 }
 

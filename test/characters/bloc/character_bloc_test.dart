@@ -26,17 +26,17 @@ void main() {
       'when [LoadCharacters] is added.',
       setUp: () {
         when(
-          () => repo.getAllCharacters(),
+          () => repo.getAllCharacters(page: 1),
         ).thenAnswer((invocation) async => const Right([]));
       },
       build: () => CharacterBloc(
         characterRepository: repo,
         storageService: storage,
       ),
-      act: (bloc) => bloc.add(LoadCharacters()),
+      act: (bloc) => bloc.add(const LoadCharacters(isReload: false)),
       verify: (bloc) {
         verify(
-          () => repo.getAllCharacters(),
+          () => repo.getAllCharacters(page: 1),
         ).called(1);
       },
       expect: () => <CharacterState>[

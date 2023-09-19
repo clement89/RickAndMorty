@@ -18,13 +18,27 @@ class CharactersPage extends StatefulWidget {
 class _CharactersPageState extends State<CharactersPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-
+  final ScrollController _scrollController = ScrollController();
   late CharacterBloc _bloc;
   @override
   void initState() {
     super.initState();
     _bloc = context.read<CharacterBloc>();
-    _bloc.add(LoadCharacters());
+    _bloc.add(const LoadCharacters(isReload: false));
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _bloc.add(const LoadCharacters(isReload: false));
+    }
   }
 
   @override
@@ -47,12 +61,12 @@ class _CharactersPageState extends State<CharactersPage> {
         backgroundColor: Colors.blue,
         strokeWidth: 4.0,
         onRefresh: () async {
-          _bloc.add(LoadCharacters());
+          _bloc.add(const LoadCharacters(isReload: true));
           return Future<void>.delayed(const Duration(seconds: 1));
         },
         child: BlocBuilder<CharacterBloc, CharacterState>(
           builder: (context, state) {
-            if (state.status == Status.loading) {
+            if (state.status == Status.loading && state.filteredList.isEmpty) {
               return const Center(
                 child: CustomLoader(),
               );
@@ -62,6 +76,7 @@ class _CharactersPageState extends State<CharactersPage> {
               );
             } else if (state.status == Status.loaded) {
               return ListView.builder(
+                controller: _scrollController,
                 itemCount: state.filteredList.length,
                 itemBuilder: (context, index) {
                   final character = state.filteredList[index];

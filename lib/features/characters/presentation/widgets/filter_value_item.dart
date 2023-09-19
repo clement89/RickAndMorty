@@ -16,16 +16,30 @@ class FilterValueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 0.45.sw,
-      child: ListTile(
-        title: Text(title),
-        onTap: () {
-          final bloc = context.read<CharacterBloc>();
-          bloc.add(ApplyFilter(filter: filter, value: title));
-          dismissCallback();
-        },
-      ),
+    return BlocBuilder<CharacterBloc, CharacterState>(
+      builder: (context, state) {
+        return SizedBox(
+          width: 0.45.sw,
+          child: ListTile(
+            // leading: state.selectedFilterValue == title
+            //     ? Icon(Icons.check, size: 20.sp)
+            //     : null,
+            title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: state.selectedFilterValue == title
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+              ),
+            ),
+            onTap: () {
+              final bloc = context.read<CharacterBloc>();
+              bloc.add(ApplyFilter(filter: filter, value: title));
+              dismissCallback();
+            },
+          ),
+        );
+      },
     );
   }
 }

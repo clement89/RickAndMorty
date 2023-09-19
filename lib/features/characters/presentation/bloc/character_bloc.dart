@@ -29,7 +29,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       emit(state.copyWith(
         status: Status.loading,
       ));
-      final res = await characterRepository.getAllCharacters();
+      final res = await characterRepository.getAllCharacters(page: state.page);
       res.fold(
         (l) {
           // emit(state.copyWith(status: Status.error, error: l));
@@ -45,12 +45,22 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
         (r) {
           if (r.isNotEmpty) {
             storageService.saveCharacters(r);
+
+            List<Character> list;
+
+            if (!event.isReload) {
+              list = List.from(state.characterList);
+              list.addAll(r);
+            } else {
+              list = r;
+            }
             emit(
               state.copyWith(
-                characterList: r,
-                filteredList: r,
+                characterList: list,
+                filteredList: list,
                 status: Status.loaded,
                 error: AppError.empty(),
+                page: event.isReload ? state.page : state.page + 1,
               ),
             );
           } else {
@@ -136,6 +146,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
 
       emit(state.copyWith(
         selectedFilter: event.filter,
+        selectedFilterValue: event.value,
         filteredList: list,
       ));
     } catch (error) {

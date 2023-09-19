@@ -21,37 +21,41 @@ void main() {
 
     test('getAllCharacters returns a list of characters', () async {
       // Arrange
-      final characterData = [
-        {
-          "id": 361,
-          "name": "Toxic Rick",
-          "status": "Dead",
-          "species": "Humanoid",
-          "type": "Rick's Toxic Side",
-          "gender": "Male",
-          "origin": {
-            "name": "Alien Spa",
-            "url": "https://rickandmortyapi.com/api/location/64"
-          },
-          "location": {
-            "name": "Earth",
-            "url": "https://rickandmortyapi.com/api/location/20"
-          },
-          "image": "https://rickandmortyapi.com/api/character/avatar/361.jpeg",
-          "episode": ["https://rickandmortyapi.com/api/episode/27"],
-          "url": "https://rickandmortyapi.com/api/character/361",
-          "created": "2018-01-10T18:20:41.703Z"
-        },
-      ];
+
       final mockResponse = {
-        'results': characterData,
+        "info": {
+          "count": 826,
+          "pages": 42,
+          "next": "https://rickandmortyapi.com/api/character/?page=20",
+          "prev": "https://rickandmortyapi.com/api/character/?page=18"
+        },
+        "results": [
+          {
+            "id": 361,
+            "name": "Toxic Rick",
+            "status": "Dead",
+            "species": "Humanoid",
+            "type": "Rick's Toxic Side",
+            "gender": "Male",
+            "origin": {
+              "name": "Alien Spa",
+              "url": "https://rickandmortyapi.com/api/location/64"
+            },
+            "location": {
+              "name": "Earth",
+              "url": "https://rickandmortyapi.com/api/location/20"
+            },
+            "image":
+                "https://rickandmortyapi.com/api/character/avatar/361.jpeg",
+            "episode": ["https://rickandmortyapi.com/api/episode/27"],
+            "url": "https://rickandmortyapi.com/api/character/361",
+            "created": "2018-01-10T18:20:41.703Z"
+          },
+        ]
       };
 
-      List<Character> characterList =
-          characterData.map((e) => Character.fromJson(e)).toList();
-      when(() =>
-              mockRestService.getDataFromServer(url: 'character', header: {}))
-          .thenAnswer(
+      when(() => mockRestService
+          .getDataFromServer(url: 'character/?page=1', header: {})).thenAnswer(
         (_) async => ApiResponse(
           data: mockResponse,
           isError: false,
@@ -59,7 +63,7 @@ void main() {
       );
 
       // Act
-      final result = await characterRepository.getAllCharacters();
+      final result = await characterRepository.getAllCharacters(page: 1);
 
       // Assert
       expect(result, const TypeMatcher<Right<AppError, List<Character>>>());
@@ -67,12 +71,12 @@ void main() {
 
     test('getAllCharacters handles errors', () async {
       // Arrange
-      when(() =>
-              mockRestService.getDataFromServer(url: 'character', header: {}))
+      when(() => mockRestService
+              .getDataFromServer(url: 'character/?page=1', header: {}))
           .thenAnswer((_) async => ApiResponse(isError: true, data: {}));
 
       // Act
-      final result = await characterRepository.getAllCharacters();
+      final result = await characterRepository.getAllCharacters(page: 1);
 
       // Assert
       expect(

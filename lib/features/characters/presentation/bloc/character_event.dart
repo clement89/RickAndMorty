@@ -7,7 +7,12 @@ class CharacterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadCharacters extends CharacterEvent {}
+class LoadCharacters extends CharacterEvent {
+  final bool isReload;
+  const LoadCharacters({
+    required this.isReload,
+  });
+}
 
 class UpdateFilter extends CharacterEvent {
   final Filter filter;

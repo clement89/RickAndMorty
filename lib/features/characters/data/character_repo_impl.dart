@@ -8,10 +8,11 @@ class CharacterRepositoryImpl implements CharacterRepository {
   CharacterRepositoryImpl({required this.restService});
   final RestService restService;
   @override
-  Future<Either<AppError, List<Character>>> getAllCharacters() async {
+  Future<Either<AppError, List<Character>>> getAllCharacters(
+      {required int page}) async {
     try {
       final res = await restService.getDataFromServer(
-        url: 'character',
+        url: 'character/?page=$page',
         header: {},
       );
       if (res.isError) {
@@ -33,8 +34,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
         return Future.value(Right(characters));
       }
     } catch (e) {
-      return const Left(
-          AppError(message: 'Failed to get characters from server'));
+      return Left(AppError(message: e.toString()));
     }
   }
 }

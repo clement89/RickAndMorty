@@ -21,12 +21,19 @@ class StorageService {
     if (_characterBox == null) {
       throw Exception('Character box is not open.');
     }
-    clearCharacters();
-    // Convert and save each Character object to Hive
-    List<CharacterHive> hiveCharacters = characters
-        .map((character) => StorageHelpers.convertToHiveModel(character))
-        .toList();
-    await _characterBox!.addAll(hiveCharacters);
+
+    for (final character in characters) {
+      CharacterHive? existingCharacter = _characterBox!.values
+          .cast<CharacterHive?>()
+          .firstWhere((hiveCharacter) => hiveCharacter!.id == character.id,
+              orElse: () => null);
+
+      if (existingCharacter != null) {
+        // await _characterBox!.put(existingCharacter.key, StorageHelpers.convertToHiveModel(character));
+      } else {
+        await _characterBox!.add(StorageHelpers.convertToHiveModel(character));
+      }
+    }
   }
 
   List<Character>? getCharacters() {
